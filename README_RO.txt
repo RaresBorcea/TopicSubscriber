@@ -1,6 +1,3 @@
-=============== Tema 2 PC ===============
-Borcea Rareș Ioan; Grupa 324CC; 2018-2019
-
 (!) Explicațiile din README trebuie coroborate comentariilor ce însoțesc codul,
 pentru a putea înțelege în totalitate implementarea.
 
@@ -63,4 +60,10 @@ defensive în parsarea acestora (ex. s-a asigurat existenţa unui null-terminato
 string-uri) şi afişarea la consolă a mesajului primit, în forma prezentată în enunţ.
 
 Modalităţi de rulare:
-Se respectă precizările din enunţ.
+./server <PORT_DORIT>
+./subscriber <ID_Client> <IP_Server> <Port_Server>
+
+Comenzi acceptate de clienți:
+-subscribe topic [SF] - SF unu pentru reținerea mesajelor în hash, zero altfel
+-unsubcribe topic
+-exit
