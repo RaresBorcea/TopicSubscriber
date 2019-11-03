@@ -34,9 +34,11 @@ trimitem, din hashmap, mesajele de la topicurile la care a fost abonat cu SF=1
 -topic existent - trimitem direct mesajul către clienţii abonaţi conectaţi sau
 adăugăm mesajul primit în hashmap-ul de mesaje corespunzător topicului respectiv,
 pentru a-l putea trimite la reconectarea clienţilor abonaţi cu SF=1 şi neconectaţi.
-Fiecare mesaj are un TTL (time-to-live) care să indice durata de viață - numărul de instanțe care mai sunt necesar de trimis. Acest număr scade cu o unitate la fiecare
+Fiecare mesaj are un TTL (time-to-live) care să indice durata de viață - numărul de 
+instanțe care mai sunt necesar de trimis. Acest număr scade cu o unitate la fiecare
 trimitere a unei instanţe (s-a mai conectat un client care trebuia să primească mesajul,
-trimitem mesaj şi decrementăm TTL al mesajului din hashmap). Când acesta ajunge zero, mesajele sunt eliminate din memorie. Locaţia (indexul) la care sunt stocate mesajele
+trimitem mesaj şi decrementăm TTL al mesajului din hashmap). Când acesta ajunge zero, 
+mesajele sunt eliminate din memorie. Locaţia (indexul) la care sunt stocate mesajele
 de trimis pentru fiecare client sunt stocate într-o listă a fiecărui client în
 hashmap-ul clients, unde există intrări de forma <topic, index_mesaj>, astfel ştiind
 exact locaţia mesajului de trimis în hashmap-ul topics.
