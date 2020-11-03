@@ -100,10 +100,10 @@ int main(int argc, char *argv[])
 						memset(&p, 0, sizeof(p));
 						sprintf(p.payload, "%s", buffer);
 						server_msg m;
-					    memset(&m, 0, sizeof(m));
-					    m.msg = p;
+					        memset(&m, 0, sizeof(m));
+					        m.msg = p;
 
-					    // close all connected TCP clients - send 'exit'
+					        // close all connected TCP clients - send 'exit'
 						for(int j = 0; j <= fdmax; j++) {
 							if(j > 4 && FD_ISSET(j, &read_fds)) {
 								if(j != i) {
@@ -150,21 +150,21 @@ int main(int argc, char *argv[])
 					string id(buffer);
 					auto old_client = clients.find(id);
 					// check for new or old TCP client
-				    if(old_client != clients.end()) { // old client
+				        if(old_client != clients.end()) { // old client
 
 				    	// if another client with same ID is connected, kill it
 				    	int old_socket = old_client->second.socket;
 				    	if(FD_ISSET(old_socket, &read_fds)) {
 				    		memset(&p, 0, sizeof(p));
-							sprintf(p.payload, "%s", "exit\n");
-							server_msg m;
-						    memset(&m, 0, sizeof(m));
-						    m.msg = p;
-						    // send 'exit' command to old TCP client with same ID
+						sprintf(p.payload, "%s", "exit\n");
+						server_msg m;
+						memset(&m, 0, sizeof(m));
+						m.msg = p;
+						// send 'exit' command to old TCP client with same ID
 				    		n = send(old_socket, &m, sizeof(m), 0);
-							DIE(n < 0, "ERROR: Could not send 'exit' command to old_socket of current TCP client. Closing.");
+						DIE(n < 0, "ERROR: Could not send 'exit' command to old_socket of current TCP client. Closing.");
 				    		// remove socket from read set
-							FD_CLR(old_socket, &read_fds);
+						FD_CLR(old_socket, &read_fds);
 				    	}
 				    	
 				    	// keep new socket for client_ID as the current one
@@ -197,9 +197,9 @@ int main(int argc, char *argv[])
 				        old_client->second.messages.clear();
 
 				    } else { // new client - add to clients hashmap
-				        client_val c_val;
-						c_val.socket = newsockfd;
-						clients.insert({id, c_val});
+					client_val c_val;
+					c_val.socket = newsockfd;
+					clients.insert({id, c_val});
 				    }
 
 				} else if(i == sockudp) {
@@ -210,16 +210,16 @@ int main(int argc, char *argv[])
 					DIE(ret < 0, "ERROR: Could not receive message from UDP client. Closing.");
 
 					server_msg m;
-				    memset(&m, 0, sizeof(m));
-				    m.msg = p;
-				    sprintf(m.ip, "%s", inet_ntoa(cli_addr.sin_addr));
-				    m.port = ntohs(cli_addr.sin_port);
+				        memset(&m, 0, sizeof(m));
+				        m.msg = p;
+				        sprintf(m.ip, "%s", inet_ntoa(cli_addr.sin_addr));
+				        m.port = ntohs(cli_addr.sin_port);
 
 					string topic(p.topic);
 					auto old_topic = topics.find(topic);
 
 					// check for new or old topic
-				    if(old_topic != topics.end()) { // old topic
+				        if(old_topic != topics.end()) { // old topic
 				    	int ttl = 0; // time-to-live for message
 				        set<pair<string, bool>> cl = old_topic->second.clients;
 				        for(set<pair<string, bool>>::iterator it = cl.begin(); it != cl.end(); ++it) {
@@ -242,7 +242,7 @@ int main(int argc, char *argv[])
 						}
 				    } else { // new topic
 				        topic_val t_val;
-						topics.insert({topic, t_val});
+					topics.insert({topic, t_val});
 				    }
 
 				} else {
@@ -257,10 +257,10 @@ int main(int argc, char *argv[])
 					unordered_map<string, client_val>::iterator it;
 					for(it = clients.begin(); it != clients.end(); ++it) {
 						id = (*it).first;
-				       	client_val c_val = (*it).second;
-				       	if(c_val.socket == i) {
-				       		break;
-				       	}
+				       		client_val c_val = (*it).second;
+				       		if(c_val.socket == i) {
+				       			break;
+				       		}
 					}
 
 					if(n == 0) {
@@ -279,29 +279,29 @@ int main(int argc, char *argv[])
 						sprintf(buffer, "%s", m.msg.payload);
 
 						// parse command
-					    vector<string> command;
-					    string delim = " ";
-					    string buf(buffer);
-					    split(buf, delim, command);
-					    string comm = command[0];
-					    string top = command[1];
+					    	vector<string> command;
+					    	string delim = " ";
+					    	string buf(buffer);
+					    	split(buf, delim, command);
+					    	string comm = command[0];
+					    	string top = command[1];
 
-					    if(strcmp(comm.c_str(), "subscribe") == 0) { // new subscription
-					    	string sf = command[2]; // get SF policy
-					    	string topic(top);
-					    	auto old_topic = topics.find(topic);
+					    	if(strcmp(comm.c_str(), "subscribe") == 0) { // new subscription
+					    		string sf = command[2]; // get SF policy
+					    		string topic(top);
+					    		auto old_topic = topics.find(topic);
 
-					    	// check for new or old topic
-					    	if(old_topic != topics.end()) { // topic exists
-					    		
-					    		if(strcmp(sf.c_str(), "1\n") == 0) {
-					    			// check for existing subscription and modify
-					    			old_topic->second.clients.erase({id, false}); 
-					    			old_topic->second.clients.insert({id, true});
-					    		} else {
-					    			old_topic->second.clients.erase({id, true});
-					    			old_topic->second.clients.insert({id, false});
-					    		}
+							// check for new or old topic
+							if(old_topic != topics.end()) { // topic exists
+
+								if(strcmp(sf.c_str(), "1\n") == 0) {
+									// check for existing subscription and modify
+									old_topic->second.clients.erase({id, false}); 
+									old_topic->second.clients.insert({id, true});
+								} else {
+									old_topic->second.clients.erase({id, true});
+									old_topic->second.clients.insert({id, false});
+								}
 
 					    	} else { // create new topic
 
@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
 					    		} else {
 					    			t_val.clients.insert({id, false});
 					    		}
-								topics.insert({topic, t_val});
+							topics.insert({topic, t_val});
 					    	}
 
 					    } else if(strcmp(comm.c_str(), "unsubscribe") == 0) { // unsubscribe client
@@ -328,7 +328,7 @@ int main(int argc, char *argv[])
 					    	// check for topic existence
 					    	if(old_topic != topics.end()) { 
 					    		for(set<pair<string, bool>>::iterator it = old_topic->second.clients.begin(); 
-					    		 		it != old_topic->second.clients.end(); ++it) {
+					    		 	it != old_topic->second.clients.end(); ++it) {
 					    		 	string c_id = (*it).first;
 
 					    		 	// get client and erase from subscription list
