@@ -31,9 +31,9 @@ int main(int argc, char *argv[])
 
 	// zeroing read and temporary file descriptors sets
 	FD_ZERO(&read_fds);
-    FD_ZERO(&tmp_fds);
+    	FD_ZERO(&tmp_fds);
 
-    // add all sockets to read set (including keyboard/STDIN)
+    	// add all sockets to read set (including keyboard/STDIN)
 	FD_SET(sockfd, &read_fds);
 	FD_SET(STDIN_FILENO, &read_fds);
 
@@ -106,9 +106,9 @@ int main(int argc, char *argv[])
 					udp_msg p;
 					memset(&p, 0, sizeof(p));
 					server_msg m;
-			    	memset(&m, 0, sizeof(m));
-			    	sprintf(p.payload, "%s", buffer);
-			    	m.msg = p;
+					memset(&m, 0, sizeof(m));
+					sprintf(p.payload, "%s", buffer);
+					m.msg = p;
 
 					if(strcmp(command, "subscribe") == 0 || strcmp(command, "subscribe\n") == 0) {
 
@@ -148,9 +148,9 @@ int main(int argc, char *argv[])
 					
 					// received data from server
 					server_msg m;
-				    memset(&m, 0, sizeof(m));
-            		n = recv(sockfd, &m, sizeof(m), 0);
-            		DIE(n == 0, "Client_ERROR: Could not receive data from server. Closing.");
+				        memset(&m, 0, sizeof(m));
+            				n = recv(sockfd, &m, sizeof(m), 0);
+            				DIE(n == 0, "Client_ERROR: Could not receive data from server. Closing.");
 
             		// received 'exit' command
             		ret = strcmp(m.msg.payload, "exit\n");
@@ -230,12 +230,12 @@ int main(int argc, char *argv[])
               				printf("%s:%d - %s - %s - %s\n", m.ip, m.port, topic, "STRING", message);
 
               			} 
-            		}
-				}
-			}
-		}
-	}
+            		   }
+		      }
+	         }
+            }
+       }
 
-	close(sockfd);
-	return 0;
+       close(sockfd);
+       return 0;
 }
